@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "tickety-sdk": ["./node_modules/tickety-sdk"]
+    },
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true
+  },
+  "include": ["vite.config.ts"]
+}
