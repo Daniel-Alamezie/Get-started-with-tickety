@@ -5,15 +5,13 @@ interface Message {
   id: string;
   content: string;
   created_at: string;
-  role: 'developer' | 'user'; // Add other roles as needed
-  // Include other properties as needed
+  role: 'developer' | 'user'; // All senders have roles associated with them. You as the developer always have the developer role associated and the client sending messages from your software have the  user role. This is important if you want to style the message based on the sender's role
 }
-
 
 const ChatBox = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const authToken = 'eyJhbGciOiJIUzI1NiIsImtpZCI6Im1aeVBmS1RGaDhJSXdLTVciLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzExNzUyMzg5LCJpYXQiOjE3MTE3NDg3ODksImlzcyI6Imh0dHBzOi8vb3V1ampud21raHV1am55a3l5dXcuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjY0MGFkMGQ1LTcwNGEtNGZlMS1hMThkLTMxMDE4OGNhYTM2OCIsImVtYWlsIjoiZGFuaWVsYWxhbWV6aWUzMDBAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJnaXRodWIiLCJwcm92aWRlcnMiOlsiZ2l0aHViIl19LCJ1c2VyX21ldGFkYXRhIjp7ImF2YXRhcl91cmwiOiJodHRwczovL2F2YXRhcnMuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3UvNzQ4ODA4NTc_dj00IiwiZW1haWwiOiJkYW5pZWxhbGFtZXppZTMwMEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbSIsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiRGFuaWVsLUFsYW1lemllIiwicHJvdmlkZXJfaWQiOiI3NDg4MDg1NyIsInN1YiI6Ijc0ODgwODU3IiwidXNlcl9uYW1lIjoiRGFuaWVsLUFsYW1lemllIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3MTE3MDU5NDJ9XSwic2Vzc2lvbl9pZCI6IjYyNjdhY2IyLTBlZTktNDVkYS1hMmE5LTMxOGZjMDFhZmYwMiIsImlzX2Fub255bW91cyI6ZmFsc2V9.-DjxOdKZbrlDk-yD1UA5KE-9_HDA3eS5ESYJ97Cai24'; // Replace with your actual token
+  const authToken = ('Auth_Token'); // Replace with your actual token. This is a jwt token used to verify users session on your application. This is used to get simple information about the user so when they send you a message you can see who has sent or raised a ticket in your dashboard.
 
   // Function to fetch messages
   const pollMessages = useCallback(async () => {
@@ -27,8 +25,6 @@ const ChatBox = () => {
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
-    // Poll for new messages after a delay
-    setTimeout(pollMessages, 5000);
   }, [authToken]);
 
   // Function to send a message
@@ -43,11 +39,8 @@ const ChatBox = () => {
   };
 
   useEffect(() => {
-    pollMessages(); // Start polling when the component mounts
-    return () => {
-      // Cleanup: clear the timeout to stop polling when the component unmounts
-      clearTimeout(pollMessages);
-    };
+    const intervalId = setInterval(pollMessages, 5000); // Poll for new messages every 5 seconds
+    return () => clearInterval(intervalId); // Clear the interval when the component unmounts
   }, [pollMessages]);
 
   return (

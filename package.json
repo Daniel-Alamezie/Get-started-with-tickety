@@ -17,7 +17,7 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "tickety-sdk": "^0.0.1"
+    "tickety-sdk": "^0.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
